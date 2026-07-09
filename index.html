@@ -5,41 +5,140 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Marketing Knowledge Skill Dashboard</title>
   <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; margin: 28px; color: #1f2933; background: #f7f8f5; }
-    main { max-width: 1280px; margin: 0 auto; }
-    h1 { font-size: 30px; margin-bottom: 6px; }
-    h2 { margin-top: 28px; font-size: 20px; }
-    h3 { margin-top: 18px; font-size: 16px; }
-    .meta { color: #52606d; margin-bottom: 22px; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; }
-    .metric { background: #fff; border: 1px solid #d9e2ec; border-radius: 8px; padding: 16px; }
-    .metric strong { display: block; font-size: 28px; color: #102a43; }
-    .metric span { color: #52606d; font-size: 13px; }
-    .table-wrap { overflow-x: auto; border: 1px solid #d9e2ec; border-radius: 8px; background: #fff; }
-    table { width: 100%; border-collapse: collapse; background: #fff; min-width: 760px; }
-    th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid #edf2f7; }
-    td { vertical-align: top; font-size: 14px; line-height: 1.45; }
-    th { background: #e7ece6; }
-    .note { background: #fff; border-left: 4px solid #486581; padding: 12px 14px; }
-    code { background: #edf2f7; padding: 2px 4px; border-radius: 4px; }
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --panel-2: #0b1220;
+      --line: #263449;
+      --text: #e5edf7;
+      --muted: #94a3b8;
+      --blue: #60a5fa;
+      --green: #34d399;
+      --amber: #fbbf24;
+      --red: #fb7185;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", sans-serif;
+      color: var(--text);
+      background: radial-gradient(circle at top left, rgba(37, 99, 235, .18), transparent 32rem), var(--bg);
+    }
+    main { max-width: 1320px; margin: 0 auto; padding: 28px; }
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      border-bottom: 1px solid var(--line);
+      background: rgba(15, 23, 42, .92);
+      backdrop-filter: blur(14px);
+    }
+    .nav { max-width: 1320px; margin: 0 auto; padding: 14px 28px; display: flex; justify-content: space-between; gap: 16px; align-items: center; }
+    h1 { font-size: 22px; margin: 0; letter-spacing: 0; }
+    h2 { margin: 0 0 14px; font-size: 18px; }
+    h3 { margin: 0 0 10px; font-size: 15px; color: #cbd5e1; }
+    p { line-height: 1.65; }
+    a { color: #bfdbfe; text-decoration: none; }
+    .meta { color: var(--muted); font-size: 12px; }
+    .hero { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(320px, .75fr); gap: 18px; margin-bottom: 18px; }
+    .panel { background: linear-gradient(180deg, rgba(17, 24, 39, .94), rgba(11, 18, 32, .94)); border: 1px solid var(--line); border-radius: 14px; padding: 18px; box-shadow: 0 18px 50px rgba(0,0,0,.22); }
+    .panel.light { background: rgba(15, 23, 42, .72); }
+    .purpose { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 14px; }
+    .purpose div { background: rgba(96, 165, 250, .08); border: 1px solid rgba(96, 165, 250, .18); border-radius: 12px; padding: 12px; }
+    .purpose strong { display: block; margin-bottom: 4px; }
+    .grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
+    .metric { background: rgba(2, 6, 23, .5); border: 1px solid var(--line); border-radius: 12px; padding: 14px; min-height: 104px; }
+    .metric strong { display: block; font-size: 30px; margin-top: 12px; }
+    .metric span { color: var(--muted); font-size: 12px; }
+    .badge { display: inline-flex; align-items: center; gap: 6px; border-radius: 999px; padding: 5px 10px; font-size: 12px; border: 1px solid var(--line); color: #cbd5e1; background: rgba(15,23,42,.9); }
+    .badge.green { color: var(--green); border-color: rgba(52,211,153,.35); background: rgba(52,211,153,.08); }
+    .badge.amber { color: var(--amber); border-color: rgba(251,191,36,.35); background: rgba(251,191,36,.08); }
+    .stack { display: grid; gap: 12px; }
+    .flow { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; margin-top: 12px; }
+    .step { border: 1px solid var(--line); background: rgba(2,6,23,.42); border-radius: 12px; padding: 12px; }
+    .step .num { color: var(--blue); font-size: 12px; margin-bottom: 6px; }
+    .section-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; }
+    .table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; background: rgba(2, 6, 23, .45); }
+    table { width: 100%; border-collapse: collapse; min-width: 820px; }
+    th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid rgba(38,52,73,.72); }
+    th { color: #dbeafe; background: rgba(30, 41, 59, .85); font-size: 12px; }
+    td { color: #d7e1ee; vertical-align: top; font-size: 13px; line-height: 1.48; }
+    details { border: 1px solid var(--line); border-radius: 14px; background: rgba(15, 23, 42, .66); overflow: hidden; }
+    details + details { margin-top: 12px; }
+    summary { cursor: pointer; padding: 15px 17px; font-weight: 700; color: #f8fafc; background: rgba(15, 23, 42, .88); }
+    details[open] summary { border-bottom: 1px solid var(--line); }
+    .detail-body { padding: 16px; }
+    .note { border-left: 4px solid var(--blue); background: rgba(96,165,250,.08); padding: 12px 14px; border-radius: 10px; color: #cbd5e1; }
+    code { background: rgba(2,6,23,.85); border: 1px solid var(--line); padding: 2px 5px; border-radius: 6px; color: #bfdbfe; }
+    .danger { color: var(--amber); }
+    @media (max-width: 980px) {
+      .hero { grid-template-columns: 1fr; }
+      .grid, .purpose, .flow { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 620px) {
+      main, .nav { padding-left: 16px; padding-right: 16px; }
+      .grid, .purpose, .flow { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
+<header>
+  <div class="nav">
+    <div>
+      <h1>Marketing Knowledge Skill Dashboard</h1>
+      <div class="meta">Obsidian knowledge base -> Skill work system</div>
+    </div>
+    <div class="meta">Updated: 2026-07-09 09:40:55</div>
+  </div>
+</header>
 <main>
-  <h1>Marketing Knowledge Skill Dashboard</h1>
-  <div class="meta">Updated: 2026-07-09 09:25:04</div>
-
-  <h2>知識庫迭代狀態</h2>
-  <section class="grid">
-    <div class="metric"><strong>10</strong><span>Book notes</span></div>
-    <div class="metric"><strong>18</strong><span>Principles</span></div>
-    <div class="metric"><strong>10</strong><span>Workflows</span></div>
-    <div class="metric"><strong>9</strong><span>Templates</span></div>
-    <div class="metric"><strong>4</strong><span>OCR blocker mentions</span></div>
+  <section class="hero">
+    <div class="panel">
+      <span class="badge amber">System state: 可用但仍有卡點</span>
+      <h2 style="margin-top:14px;">這個 dashboard 為什麼存在</h2>
+      <p>它不是給你看「我做了幾個檔案」。它是知識系統的控制台，用來判斷：來源是否可信、知識是否已沉澱、Skill 是否能被工作調用、下一步卡在哪裡。</p>
+      <div class="purpose">
+        <div><strong>1. 可驗證</strong><span class="meta">每個數字都能往下追到書、原則、模板或測試。</span></div>
+        <div><strong>2. 可維護</strong><span class="meta">先看成熟度與卡點，再決定新增、合併或修正。</span></div>
+        <div><strong>3. 可迭代</strong><span class="meta">把工作回饋寫回知識庫與 Skill，而不是只做一次輸出。</span></div>
+      </div>
+    </div>
+    <div class="panel stack">
+      <div>
+        <span class="badge green">Next decision</span>
+        <h2 style="margin-top:12px;">下一步應該做什麼</h2>
+        <p class="danger">補 B001 / B005 OCR，並把 marketing-knowledge-builder 安裝成正式 Skill。</p>
+      </div>
+      <div class="note">目前 dashboard 是 HTML 鏡像；Markdown 知識庫與 Skill 草稿才是 source of truth。</div>
+    </div>
   </section>
 
-  <h2>Book notes 明細：哪 10 本</h2>
-  <div class="table-wrap"><table><thead><tr><th>ID</th><th>Book</th><th>Read</th><th>Principles</th><th>Workflow</th><th>Template</th><th>Status</th></tr></thead><tbody><tr><td>B001</td><td>一次寫出勸敗神文案</td><td>否</td><td>否</td><td>否</td><td>否</td><td>來源需 OCR</td></tr>
+  <section class="panel">
+    <h2>第一層：系統成熟度</h2>
+    <div class="grid">
+      <div class="metric"><span>Book notes tracked</span><strong>10</strong><span>8 completed, 2 OCR-blocked</span></div>
+      <div class="metric"><span>Principles synthesized</span><strong>18</strong><span>cross-source decision rules</span></div>
+      <div class="metric"><span>Workflows</span><strong>10</strong><span>usable operating procedures</span></div>
+      <div class="metric"><span>Templates</span><strong>9</strong><span>copyable work assets</span></div>
+      <div class="metric"><span>Skill drafts tested</span><strong>1</strong><span>1 skill draft total</span></div>
+    </div>
+  </section>
+
+  <section class="panel light">
+    <h2>第二層：從知識到工作技能的路徑</h2>
+    <div class="flow">
+      <div class="step"><div class="num">01</div><strong>來源驗證</strong><p class="meta">確認可讀、OCR、缺失或可信度。</p></div>
+      <div class="step"><div class="num">02</div><strong>知識萃取</strong><p class="meta">拆成問題、原則、場景、限制。</p></div>
+      <div class="step"><div class="num">03</div><strong>跨源沉澱</strong><p class="meta">合併重複、並列衝突、形成規則。</p></div>
+      <div class="step"><div class="num">04</div><strong>Skill 封裝</strong><p class="meta">定義觸發、輸入、輸出、邊界。</p></div>
+      <div class="step"><div class="num">05</div><strong>實戰迭代</strong><p class="meta">用測試與工作回饋更新規格。</p></div>
+    </div>
+  </section>
+
+  <section class="section-grid">
+    <details open>
+      <summary>第三層 A：Book notes 明細：哪 10 本</summary>
+      <div class="detail-body"><div class="table-wrap"><table><thead><tr><th>ID</th><th>Book</th><th>Read</th><th>Principles</th><th>Workflow</th><th>Template</th><th>Status</th></tr></thead><tbody><tr><td>B001</td><td>一次寫出勸敗神文案</td><td>否</td><td>否</td><td>否</td><td>否</td><td>來源需 OCR</td></tr>
 <tr><td>B002</td><td>向億萬電商社長學網路行銷</td><td>是</td><td>是</td><td>是</td><td>是</td><td>第一輪完成</td></tr>
 <tr><td>B003</td><td>數位時代的高效行銷</td><td>是</td><td>是</td><td>是</td><td>是</td><td>第一輪完成</td></tr>
 <tr><td>B004</td><td>流量池</td><td>是</td><td>是</td><td>是</td><td>是</td><td>第一輪完成</td></tr>
@@ -48,10 +147,12 @@
 <tr><td>B007</td><td>成長駭客攻略</td><td>是</td><td>是</td><td>是</td><td>是</td><td>第一輪完成</td></tr>
 <tr><td>B008</td><td>尖叫感：行動電商×自媒體33個關鍵文案技巧</td><td>是</td><td>是</td><td>是</td><td>是</td><td>第一輪完成</td></tr>
 <tr><td>B009</td><td>故事行銷聖經</td><td>是</td><td>是</td><td>是</td><td>是</td><td>第一輪完成</td></tr>
-<tr><td>B010</td><td>品牌的技術和藝術</td><td>是</td><td>是</td><td>是</td><td>是</td><td>第一輪完成</td></tr></tbody></table></div>
+<tr><td>B010</td><td>品牌的技術和藝術</td><td>是</td><td>是</td><td>是</td><td>是</td><td>第一輪完成</td></tr></tbody></table></div></div>
+    </details>
 
-  <h2>Principles 明細：18 條是什麼</h2>
-  <div class="table-wrap"><table><thead><tr><th>ID</th><th>Principle</th><th>Source</th><th>Applicable Scenario</th><th>How To Check</th></tr></thead><tbody><tr><td>P001</td><td>技術行銷不能取代基本行銷</td><td>B002 向億萬電商社長學網路行銷</td><td>廣告成效差、素材換很多仍無效、CPA 降不下來、ROAS 起不來。</td><td>先填完「對誰說 / 說什麼 / 如何說」，再決定是否進投放優化。</td></tr>
+    <details open>
+      <summary>第三層 B：Principles 明細：18 條是什麼</summary>
+      <div class="detail-body"><div class="table-wrap"><table><thead><tr><th>ID</th><th>Principle</th><th>Source</th><th>Applicable Scenario</th><th>How To Check</th></tr></thead><tbody><tr><td>P001</td><td>技術行銷不能取代基本行銷</td><td>B002 向億萬電商社長學網路行銷</td><td>廣告成效差、素材換很多仍無效、CPA 降不下來、ROAS 起不來。</td><td>先填完「對誰說 / 說什麼 / 如何說」，再決定是否進投放優化。</td></tr>
 <tr><td>P002</td><td>廣告創意先問三件事</td><td>B002 向億萬電商社長學網路行銷</td><td>Meta Ads 素材 brief、LP 首屏、商品頁主標、促銷活動主文案。</td><td>若拿掉漂亮修辭後看不出受眾與賣點，代表創意不合格。</td></tr>
 <tr><td>P003</td><td>AB 測試前要先找 X</td><td>B002 向億萬電商社長學網路行銷</td><td>主訴求測試、素材角度測試、LP 結構測試、優惠方案測試。</td><td>每次測試前至少列出 1 個與 A/B 完全不同的 X 方案。</td></tr>
 <tr><td>P004</td><td>媒體品質用利潤判斷</td><td>B002 向億萬電商社長學網路行銷</td><td>Meta / Google / 聯盟 / SEO / KOL 渠道比較、預算分配。</td><td>用「平均每人利潤 = LTV × 毛利率 - CPA」切渠道、活動、訴求看。</td></tr>
@@ -68,10 +169,12 @@
 <tr><td>P015</td><td>故事要有衝突與改變</td><td>B009 故事行銷聖經</td><td>品牌影片、LP 敘事、案例故事、創辦人故事。</td><td>拿掉品牌名稱後，受眾是否仍能感受到人的處境與改變。</td></tr>
 <tr><td>P016</td><td>品牌從商業課題開始</td><td>B010 品牌的技術和藝術</td><td>品牌定位、活動主軸、商品溢價、長期廣告資產。</td><td>品牌主張是否能回答它解決哪個商業問題。</td></tr>
 <tr><td>P017</td><td>先判斷成長象限，再決定戰術</td><td>安索夫矩陣成長策略工作流；H. Igor Ansoff, Strategies for Diversification；Corporate Finance Institute, Ansoff Matrix</td><td>營收成長停滯、ROAS 下滑、預算分配、新品上市、品牌擴張、個人技能成長路線。</td><td>每個成長提案都要標記「既有/新產品」與「既有/新市場」，並說明為什麼不是其他象限。</td></tr>
-<tr><td>P018</td><td>低風險成長優先從存量開始</td><td>安索夫矩陣成長策略工作流；Corporate Finance Institute, Ansoff Matrix；Wikipedia, Ansoff matrix</td><td>廣告成本上升、老客回購低、會員資料閒置、商品頁 CVR 低、活動想放大。</td><td>多角化或新品提案前，先檢查既有訪客、會員、購買者、再行銷、SEO、Email、LINE 是否已被充分利用。</td></tr></tbody></table></div>
+<tr><td>P018</td><td>低風險成長優先從存量開始</td><td>安索夫矩陣成長策略工作流；Corporate Finance Institute, Ansoff Matrix；Wikipedia, Ansoff matrix</td><td>廣告成本上升、老客回購低、會員資料閒置、商品頁 CVR 低、活動想放大。</td><td>多角化或新品提案前，先檢查既有訪客、會員、購買者、再行銷、SEO、Email、LINE 是否已被充分利用。</td></tr></tbody></table></div></div>
+    </details>
 
-  <h2>Templates 明細：9 個模板是什麼</h2>
-  <div class="table-wrap"><table><thead><tr><th>Template</th><th>File</th><th>Visible Fields</th></tr></thead><tbody><tr><td>SEO 內容規劃模板</td><td>SEO內容規劃模板.md</td><td>商業目標、目標商品 / 服務、搜尋階段、主要關鍵字、長尾關鍵字、搜尋意圖...</td></tr>
+    <details>
+      <summary>第三層 C：Templates 明細：9 個模板是什麼</summary>
+      <div class="detail-body"><div class="table-wrap"><table><thead><tr><th>Template</th><th>File</th><th>Visible Fields</th></tr></thead><tbody><tr><td>SEO 內容規劃模板</td><td>SEO內容規劃模板.md</td><td>商業目標、目標商品 / 服務、搜尋階段、主要關鍵字、長尾關鍵字、搜尋意圖...</td></tr>
 <tr><td>品牌平台 Brief 模板</td><td>品牌平台Brief模板.md</td><td>商業課題、目前阻力、產品真實優勢、消費者洞察、品牌平台概念、品牌個性...</td></tr>
 <tr><td>廣告創意 Brief 模板</td><td>廣告創意Brief模板.md</td><td>品牌、商品、活動、日期、投放平台、漏斗階段...</td></tr>
 <tr><td>成長實驗卡</td><td>成長實驗卡.md</td><td>實驗名稱、安索夫象限：市場滲透 / 市場開發 / 產品開發 / 多角化、漏斗階段、問題、假設、改動...</td></tr>
@@ -79,18 +182,26 @@
 <tr><td>數位行銷啟動前檢查表</td><td>數位行銷啟動前檢查表.md</td><td>品牌、商品、活動、日期、投放平台、預算...</td></tr>
 <tr><td>書籍萃取模板</td><td>書籍萃取模板.md</td><td>編號、書名、作者、分類、原始檔、萃取狀態</td></tr>
 <tr><td>流量來源盤點模板</td><td>流量來源盤點模板.md</td><td>品牌、活動、日期、目標、最值得放大的流量、最被浪費的流量...</td></tr>
-<tr><td>行動電商文案模板</td><td>行動電商文案模板.md</td><td>使用者場景、第一句鉤子、故事 / 反差、商品出現方式、互動設計、購買理由...</td></tr></tbody></table></div>
+<tr><td>行動電商文案模板</td><td>行動電商文案模板.md</td><td>使用者場景、第一句鉤子、故事 / 反差、商品出現方式、互動設計、購買理由...</td></tr></tbody></table></div></div>
+    </details>
 
-  <h2>每日 / 每輪紀錄</h2>
-  <div class="table-wrap"><table><thead><tr><th>Date</th><th>Section</th><th>Source</th><th>Record</th></tr></thead><tbody><tr><td>2026-07-09</td><td>汲取教訓</td><td>marketing-knowledge-skill-lab/07_Reviews/迭代紀錄.md</td><td>總工作流不是電商廣告知識，而是整個行銷知識體系。；最終產物不是 SQL，而是 Skill 工作技能。；不應只累積檔案，必須定期 review、跨來源整合、更新規格。</td></tr>
+    <details open>
+      <summary>第三層 D：Skill 封裝與測試進度</summary>
+      <div class="detail-body"><div class="table-wrap"><table><thead><tr><th>Skill</th><th>Stage</th><th>Description</th><th>SKILL.md</th><th>References</th><th>Reference files</th><th>Scripts</th><th>Tests passed</th><th>Test files</th></tr></thead><tbody><tr><td>marketing-knowledge-builder</td><td>tested</td><td>Build and maintain a marketing knowledge system from ebooks, articles, frameworks, and work feedback. Use when extracting verified marketing knowledge, synthesizing cross-source principles, updating Obsidian-ready notes, or iterating Codex/GPT/Agent Skill specs from real usage.</td><td>yes</td><td>2</td><td>skill-iteration-loop.md, workflow-contract.md</td><td>0</td><td>6</td><td>marketing-knowledge-builder-test-cases.md, marketing-knowledge-builder-test-report-2026-07-09.md</td></tr></tbody></table></div></div>
+    </details>
+
+    <details>
+      <summary>第三層 E：每日 / 每輪紀錄</summary>
+      <div class="detail-body"><div class="table-wrap"><table><thead><tr><th>Date</th><th>Section</th><th>Source</th><th>Record</th></tr></thead><tbody><tr><td>2026-07-09</td><td>汲取教訓</td><td>marketing-knowledge-skill-lab/07_Reviews/迭代紀錄.md</td><td>總工作流不是電商廣告知識，而是整個行銷知識體系。；最終產物不是 SQL，而是 Skill 工作技能。；不應只累積檔案，必須定期 review、跨來源整合、更新規格。</td></tr>
 <tr><td>2026-07-09</td><td>已落地修正</td><td>marketing-knowledge-skill-lab/07_Reviews/迭代紀錄.md</td><td>建立 `marketing-knowledge-skill-lab` 專案資料夾。；建立來源萃取、跨來源整合、Skill 規格與迭代紀錄模板。；將專案定位為「行銷知識到 Skill 工作技能」。</td></tr>
-<tr><td>2026-07-09</td><td>Dashboard 修正</td><td>marketing-knowledge-skill-lab/07_Reviews/迭代紀錄.md</td><td>使用者指出 dashboard 不合格，因為只有統計數字，沒有明細。；已要求 dashboard 必須列出 10 本書、18 條原則、9 個模板、每日紀錄與 Skill 迭代明細。；已將 `sync_status.py` 改為自動產生可審核明細，不再只產出摘要卡片。</td></tr></tbody></table></div>
+<tr><td>2026-07-09</td><td>Dashboard 修正</td><td>marketing-knowledge-skill-lab/07_Reviews/迭代紀錄.md</td><td>使用者指出 dashboard 不合格，因為只有統計數字，沒有明細。；已要求 dashboard 必須列出 10 本書、18 條原則、9 個模板、每日紀錄與 Skill 迭代明細。；已將 `sync_status.py` 改為自動產生可審核明細，不再只產出摘要卡片。</td></tr></tbody></table></div></div>
+    </details>
+  </section>
 
-  <h2>Skill 封裝迭代狀態</h2>
-  <div class="table-wrap"><table><thead><tr><th>Skill</th><th>Stage</th><th>Description</th><th>SKILL.md</th><th>References</th><th>Reference files</th><th>Scripts</th><th>Tests passed</th><th>Test files</th></tr></thead><tbody><tr><td>marketing-knowledge-builder</td><td>tested</td><td>Build and maintain a marketing knowledge system from ebooks, articles, frameworks, and work feedback. Use when extracting verified marketing knowledge, synthesizing cross-source principles, updating Obsidian-ready notes, or iterating Codex/GPT/Agent Skill specs from real usage.</td><td>yes</td><td>2</td><td>skill-iteration-loop.md, workflow-contract.md</td><td>0</td><td>6</td><td>marketing-knowledge-builder-test-cases.md, marketing-knowledge-builder-test-report-2026-07-09.md</td></tr></tbody></table></div>
-
-  <h2>同步說明</h2>
-  <p class="note">此 HTML 是自動產生的狀態鏡像。可編輯來源仍是 Markdown 知識庫與 Skill 草稿。每次執行 <code>python3 marketing-knowledge-skill-lab/scripts/sync_status.py</code> 會同步更新 Markdown 狀態與此 HTML。</p>
+  <section class="panel">
+    <h2>同步說明</h2>
+    <p class="note">每次執行 <code>python3 marketing-knowledge-skill-lab/scripts/sync_status.py</code>，會從 Obsidian Markdown 與 Skill 草稿重新產生這份 dashboard。HTML 不手改；所有修正要回到 Markdown、Skill 規格或同步腳本。</p>
+  </section>
 </main>
 </body>
 </html>
